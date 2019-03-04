@@ -14,7 +14,7 @@ import json
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app.server.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://makiko:makiko10@localhost/pathways'
+app.server.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://username:password@localhost/pathways'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config.supress_callback_exceptions = True
 app.title = 'Pathways'
