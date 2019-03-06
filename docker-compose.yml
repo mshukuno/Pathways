@@ -25,7 +25,8 @@ services:
       - 80:80
 
   dash:
-    image: pathways-dash
+    build:
+      context: app
     restart: always
     environment:
       SQLALCHEMY_DATABASE_URI: postgresql://postgres:example@db/postgres
