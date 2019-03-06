@@ -1,0 +1,33 @@
+# using weak postgres/example for user/password db login!
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-example}
+    ports:
+      - 80:80
+
+  dash:
+    image: pathways-dash
+    restart: always
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:example@db/postgres
+    ports:
+      - 8050:8050
