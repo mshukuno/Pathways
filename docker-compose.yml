@@ -1,5 +1,5 @@
 # using weak postgres/example for user/password db login!
-version: '3.1'
+version: '2.0'
 
 services:
 
@@ -19,8 +19,8 @@ services:
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-example}
+      PGADMIN_DEFAULT_EMAIL: pgadmin@example.org
+      PGADMIN_DEFAULT_PASSWORD: example
     ports:
       - 80:80
 
