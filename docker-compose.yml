@@ -27,6 +27,8 @@ services:
   dash:
     build:
       context: app
+    depends_on:
+      - db
     restart: always
     environment:
       SQLALCHEMY_DATABASE_URI: postgresql://postgres:example@db/postgres
