@@ -1,14 +1,12 @@
 # Pathways
 
-Please change database URI (e.g. username:password):
-
-```python 
-app.server.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://username:password@localhost/pathways'
-```
-
-To run the app use:
+To run the app and set the passwords use (assuming a Linux computer
+the following is one command):
 
 ```
+POSTGRES_PASSWORD="secretpassword" \
+PGADMIN_DEFAULT_EMAIL=example@example.com PGADMIN_DEFAULT_PASSWORD=example \
+SQLALCHEMY_DATABASE_URI=postgresql://postgres:${POSTGRES_PASSWORD}@db/postgres \
 docker-compose -f docker-compose.yml up --build
 ```
 

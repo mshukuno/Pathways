@@ -1,4 +1,4 @@
-# using weak postgres/example for user/password db login!
+# using version 2 for compatibility with default version on Ubuntu 16.04
 version: '2.0'
 
 services:
@@ -7,7 +7,7 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_PASSWORD: example
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
   adminer:
     image: adminer
@@ -19,8 +19,8 @@ services:
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin@example.org
-      PGADMIN_DEFAULT_PASSWORD: example
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - 80:80
 
@@ -31,6 +31,6 @@ services:
       - db
     restart: always
     environment:
-      SQLALCHEMY_DATABASE_URI: postgresql://postgres:example@db/postgres
+      SQLALCHEMY_DATABASE_URI: ${SQLALCHEMY_DATABASE_URI}
     ports:
       - 8050:8050
