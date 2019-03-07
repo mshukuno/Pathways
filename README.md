@@ -65,7 +65,9 @@ psql -h 172.18.0.2 -U postgres -f database.sql
 
 ## Performing SQL queries
 
-To just connect to the database and perform SQL queries, use:
+To just connect to the database and perform SQL queries, use the
+instructions above to get to the database container IP address and then
+use `psql`:
 
 ```
 psql -h 172.18.0.2 -U postgres
