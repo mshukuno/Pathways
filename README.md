@@ -72,3 +72,6 @@ use `psql`:
 ```
 psql -h 172.18.0.2 -U postgres
 ```
+## Running web dashboard
+
+Restart the containers (for the first time database is empty) and go to http://localhost:8050/
