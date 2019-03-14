@@ -1,0 +1,14 @@
+{
+    "DB_COLUMNS": ["COMMODITY", "DISP_CD", "FY", "LOCATION", "MON","ORIGIN_NM", "PATHWAY"],
+    "DISP_GROUP_DESC": {
+            "All": {"name": "All", "color": "None"},
+            "AP": {"name": "Actionable pest", "color": "rgb(214, 39, 40)"},
+            "IR": {"name": "Inspected and released", "color": "rgb(31, 119, 180)"},
+            "NR": {"name": "Not released", "color": "rgb(227, 119, 194)"},
+            "PA": {"name": "Precautionary action", "color": "rgb(188, 189, 34)"},
+            "PD": {"name": "Phyto discrepancy", "color": "rgb(148, 103, 189)"},
+            "PP": {"name": "Pest permit", "color": "rgb(140, 86, 75)"},
+            "R": {"name": "Released without inspection", "color": "rgb(127, 127, 127)"}
+        }
+}
+

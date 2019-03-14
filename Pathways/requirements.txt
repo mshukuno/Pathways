@@ -3,6 +3,7 @@ dash-core-components
 dash-html-components
 dash-renderer
 dash-table
-pandas
 Flask-SQLAlchemy
-psycopg2
+python-dotenv
+sqlalchemy-citext
+
