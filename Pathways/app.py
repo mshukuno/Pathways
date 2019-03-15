@@ -4,7 +4,6 @@ import Pathways.callbacks
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_table as dt
-import dash_daq as daq
 
 U = Utils()
 countries = U.get_country_list(50)
@@ -37,7 +36,8 @@ app.layout =  html.Div([
                 dcc.Dropdown(
                     id='db-column-dropdown',
                     options=[{'label': c, 'value': c} for c in CONFIG['DB_COLUMNS']],
-                    value='DISP_CD')
+                    value='DISP_CD',
+                    clearable=False)
             ]),
             # Child 3 - Pie/Box/Table
             html.Div(id='group-by-outputs', className='row', style={'maxHeight': 700}),
@@ -103,7 +103,8 @@ app.layout =  html.Div([
                             dcc.Dropdown(
                                 id='country-dropdown',
                                 options=[{'label': c['label'], 'value': c['value']} for c in countries],
-                                value='All')
+                                value='All',
+                                clearable=False)
                     ]),
                     # Child 5 - DISP code dropdown
                     html.Div(
@@ -113,7 +114,8 @@ app.layout =  html.Div([
                             dcc.Dropdown(
                                 id='disp-group-dropdown',
                                 options=[{'label': val['name'], 'value': key} for key, val in CONFIG['DISP_GROUP_DESC'].items()],
-                                value='All')
+                                value='All',
+                                clearable=False)
                     ])
             ]), # END Child 2 - Temporal Line Chart Selections 
 

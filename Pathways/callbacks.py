@@ -8,7 +8,6 @@ import plotly.graph_objs as go
 import pandas as pd
 import os
 import json
-from flask import session
 
 
 risklevel_json = os.path.abspath(os.path.join(os.path.dirname('__file__'), 'Pathways/RiskLevel.json'))
@@ -49,11 +48,11 @@ def country_dropdown(count_quantity):
     # print('aggregate', aggregate)
     if count_quantity == 'count':
         df = U.query_group_by_one('ORIGIN_NM', 'count')
-        ld_options = [{'label': f'{c["ORIGIN_NM"]} ({c["Count"]})', 'value': c["ORIGIN_NM"]} 
+        ld_options = [{'label': f'{c["ORIGIN_NM"]} ({"{:,}".format(c["Count"])})', 'value': c["ORIGIN_NM"]} 
             for c in df.to_dict('rows')]
     elif count_quantity == 'quantity':
         df = U.query_group_by_one('ORIGIN_NM', 'quantity')
-        ld_options = [{'label': f'{c["ORIGIN_NM"]} ({c["Quantity"]})', 'value': c["ORIGIN_NM"]} 
+        ld_options = [{'label': f'{c["ORIGIN_NM"]} ({"{:,}".format(c["Quantity"])[:-2]})', 'value': c["ORIGIN_NM"]} 
             for c in df.to_dict('rows')]
     ld_options.insert(0, {'label': 'All', 'value': 'All'})
 

@@ -26,10 +26,10 @@ class Utils:
                 .group_by(Aphis.ORIGIN_NM)\
                 .order_by(db.func.count(Aphis.F280_ID).desc()).all()
 
-        df = pd.DataFrame(query, columns=['Country', 'COUNT'])
+        df = pd.DataFrame(query, columns=['Country', 'Count'])
 
         for c in df.to_dict('rows'):
-            strnum = '{:,}'.format(c['COUNT'])
+            strnum = '{:,}'.format(c['Count'])
             ops = {'label': f'{c["Country"]} ({strnum})', 'value': c["Country"]}
             cl.append(ops)
         
