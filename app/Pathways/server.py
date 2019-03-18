@@ -27,8 +27,8 @@ app = dash.Dash(
 )
 
 try:
-    if os.environ('SQLALCHEMY_DATABASE_URI'):
-        app.server.config['SQLALCHEMY_DATABASE_URI'] = os.environ('SQLALCHEMY_DATABASE_URI')
+    if os.environ.get('SQLALCHEMY_DATABASE_URI'):
+        app.server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     else:
         app.server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
 except Exception as e:
