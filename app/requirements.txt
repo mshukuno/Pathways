@@ -5,5 +5,6 @@ dash-renderer
 dash-table
 Flask-SQLAlchemy
 python-dotenv
-sqlalchemy-citext
+dash_google_auth
+psycopg2
 

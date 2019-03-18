@@ -9,6 +9,20 @@
             "PD": {"name": "Phyto discrepancy", "color": "rgb(148, 103, 189)"},
             "PP": {"name": "Pest permit", "color": "rgb(140, 86, 75)"},
             "R": {"name": "Released without inspection", "color": "rgb(127, 127, 127)"}
-        }
+        },
+    "MONTH": {
+        "1": "Jan",
+        "2": "Feb",
+        "3": "Mar",
+        "4": "Apr",
+        "5": "May",
+        "6": "Jun",
+        "7": "Jul",
+        "8": "Aug",
+        "9": "Sep",
+        "10": "Oct",
+        "11": "Nov",
+        "12": "Dec"
+    }
 }
 

@@ -55,12 +55,33 @@ class Utils:
         return result
 
 
-    def pie_value_generator(self, label_key, value_key, dict_list, name):
+    def convert_month_label(self, label_key, value_key, dict_list, name):
+        ld_vals = []
+        for row in dict_list:
+            new_vals = {label_key: '', value_key: ''}
+            month = CONFIG['MONTH'][str(row[label_key])[:-2]]
+            new_vals[label_key] = month
+            new_vals[value_key] = row[value_key]
+            ld_vals.append(new_vals)
         result = {
-            'values': self.list_generator(value_key, dict_list),
-            'labels': self.list_generator(label_key, dict_list),
+            'values': self.list_generator(value_key, ld_vals),
+            'labels': self.list_generator(label_key, ld_vals),
             'name': name
         }
+        
+        return result
+
+
+    def pie_value_generator(self, label_key, value_key, dict_list, name):
+
+        if label_key == 'MON':
+            result = self.convert_month_label(label_key, value_key, dict_list, name)
+        else:
+            result = {
+                'values': self.list_generator(value_key, dict_list),
+                'labels': self.list_generator(label_key, dict_list),
+                'name': name
+            }
         return result
 
 
@@ -280,13 +301,13 @@ class Utils:
 
 
     def chart_pest_found_temporal(self, date_group, country, count_quantity, layout):
-        layout['title'] = 'Pest Found'
+        layout['title'] = 'Pest Found (%)'
         # Get data
         df = self.data_pest_found_temporal(date_group, country)
         df_yes = df[df.PestFound == 'Yes']
         df_no = df[df.PestFound == 'No']
 
-        df_merge = pd.merge(df_yes, df_no, on='Date', how='outer')
+        df_merge = pd.merge(df_yes, df_no, on='Date', how='left')
 
         # Add count Yes/(Yes+No)
         df_merge['CountPer'] = (df_merge['Count_x']/(df_merge['Count_x']+df_merge['Count_y']) * 100).round(1)
@@ -310,7 +331,7 @@ class Utils:
             dcc.Graph(
                 id='temporal-line',
                 figure=dict(data=[plot], layout=layout)
-            )   
+            )  
         ])
 
         return htmldiv
@@ -319,7 +340,8 @@ class Utils:
         trace = []
         layout = dict(
             margin=go.layout.Margin(t=50), 
-            title = 'Pest Found Ports'
+            title = 'Pest Found Ports',
+            yaxis = dict(automargin=True)
         )
         plot = go.Bar(
             name='Pest Found',
@@ -434,7 +456,6 @@ class Utils:
                 .join(City, Disp)\
                 .filter(Aphis.ORIGIN_NM == country)\
                 .group_by(Aphis.ORIGIN_NM, City.city, Disp.disp_group).all()
-                
             
             else:
                 query = db.session.query(Aphis.ORIGIN_NM, City.city, Disp.disp_group, db.func.count(Aphis.F280_ID),db.func.sum(Aphis.QUANTITY))\

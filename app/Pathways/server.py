@@ -5,6 +5,7 @@ import os
 import json
 from flask import Flask
 from dash_google_auth import GoogleOAuth
+import sys
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -24,7 +25,17 @@ app = dash.Dash(
     auth='auth',
     external_stylesheets=external_stylesheets
 )
-app.server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+
+try:
+    if os.environ('SQLALCHEMY_DATABASE_URI'):
+        app.server.config['SQLALCHEMY_DATABASE_URI'] = os.environ('SQLALCHEMY_DATABASE_URI')
+    else:
+        app.server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+except Exception as e:
+    print(e)
+    print('DATABASE does not exist')
+    sys.exit()
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['supress_callback_exceptions'] = True
 app.title = 'Pathways'

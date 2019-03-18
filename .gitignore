@@ -1,3 +1,4 @@
-Pathways/.env
-Pathways/__pycashe__
+Pathways/__pycache__
+.env
+.gitignore
 .vscode
