@@ -1,5 +1,4 @@
 from Pathways.server import db
-from citext import CIText
 
 
 class Aphis(db.Model):

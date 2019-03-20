@@ -7,4 +7,6 @@ Flask-SQLAlchemy
 python-dotenv
 dash_google_auth
 psycopg2
-
+pandas
+sty
+psycopg2-binary

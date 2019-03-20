@@ -1,4 +1,5 @@
 {
+    "AUTH": "NO",
     "DB_COLUMNS": ["COMMODITY", "DISP_CD", "FY", "LOCATION", "MON","ORIGIN_NM", "PATHWAY"],
     "DISP_GROUP_DESC": {
             "All": {"name": "All", "color": "None"},
