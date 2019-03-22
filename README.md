@@ -99,6 +99,19 @@ example:
 ```
 C:/Users/mshukun/Desktop/database.sql:/docker-entrypoint-initdb.d/database.sql
 ```
+Note:
+You can set folder to volume instead of file such as: 
+```
+C:/Users/mshukun/Desktop/data:/docker-entrypoint-initdb.d/
+```
+In this case, all file contents in the **data** folder will be copied in *docker-entrypoint-initdb.d* folder, but sql file will not be loaded into database. You will need to load the data after successfuly build Docker containers.
+```
+docker exec -it pathways-visualization-tool_db_1 bash
+```
+```
+psql -U postgres -f /docker-entrypoint-initdb.d/pathways.sql
+``` 
+
 <br>
 
 ### 2. Modify .env file
