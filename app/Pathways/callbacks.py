@@ -74,17 +74,25 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
     layout = {
         'title': 'Grouped DISP',
         'xaxis': dict(
+            title='Time', 
             showgrid=True,
             zeroline=False
         ),
-        'yaxis': dict(showgrid=True)
+        'yaxis': dict(
+            title='Count',
+            showgrid=True)
     }
 
     if date_group == 'month':
         layout['xaxis']['tickmode'] = 'linear'
+        layout['xaxis']['title'] = 'Time by Month'
     else:
         layout['xaxis']['rangeslider']=dict(visible=True)
         layout['xaxis']['type']='date'
+    
+    if count_quantity == 'quantity':
+        layout['yaxis']['title'] = 'Quantity'
+
     #--------------------------------------------------------
 
     if pest_found:

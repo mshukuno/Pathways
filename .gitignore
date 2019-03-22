@@ -1,4 +1,5 @@
 app/Pathways/__pycache__
 app/Pathways/.env
 .vscode
-pathways.sql
+.env
+.docker-compose-win10.yml

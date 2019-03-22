@@ -9,8 +9,10 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - {source file}:/docker-entrypoint-initdb.d/database.sql
-
+      - C:/Users/mshukun/Desktop/pathways.sql:/docker-entrypoint-initdb.d/database.sql
+    ports:
+      - 5432:5432
+      
   adminer:
     image: adminer
     restart: always
