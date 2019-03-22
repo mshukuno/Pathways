@@ -210,3 +210,26 @@ To quit bash
 exit
 ```
 
+#### Run Dash application on your local machine
+
+It seems Windows doesn't know the IvP address of Postgresql DB.  There might have other solutions, but I was successful by using steps below.
+
+1. Add 'ports: 5432:5432' in docker-compose-win10.yml.
+2. Create .env file in the same directory as run.py.
+3. Add a line below and change your password for database and save.
+```
+SQLALCHEMY_DATABASE_URI="postgresql://postgres:<your_password>@localhost:5432/postgres"
+```
+4. Run docker-compose:
+```
+docker-compose -f docker-compose-win10.yml up --build
+```
+5. Stop container that runs Dash application.
+```
+docker stop pathways-visualization-tool_dash_1
+```
+7. Activate your local python virtual environment and run:
+```
+python run.py
+```
+6. Go to http://localhost:8050/

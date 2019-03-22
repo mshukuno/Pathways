@@ -94,8 +94,8 @@ class Utils:
         l_anno_x = [.2, .82]
         l_anno = []
         layout_box = dict(
-            title='',
-            margin=dict(),
+            # title='',
+            # margin=dict(),
             height=300
         )
 
