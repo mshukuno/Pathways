@@ -210,7 +210,7 @@ To quit bash
 exit
 ```
 
-#### Run Dash application on your local machine
+#### Run Dash application on your machine (not Docker container)
 
 It seems Windows doesn't know the IvP address of Postgresql DB.  There might have other solutions, but I was successful by using steps below.
 
@@ -233,3 +233,23 @@ docker stop pathways-visualization-tool_dash_1
 python run.py
 ```
 6. Go to http://localhost:8050/
+
+
+#### Getting data from Postgresql running in Docker container
+This is a little code just for you to get started.
+```python
+import psycopg2
+
+# Connect to the database
+conn = psycopg2.connect(host='localhost',
+      database='postgres', user='postgres', 
+      password='secretpassword')
+cursor = conn.cursor()
+
+# Show all tables
+cursor.execute('SELECT relname FROM pg_class WHERE relkind='r' AND relname !~ '^(pg_|sql_)';')
+print(cursor.fetchall(), '\n\n')
+
+cursor.execute('SELECT * FROM disp_code')
+print(cursor.fetchall())
+```
