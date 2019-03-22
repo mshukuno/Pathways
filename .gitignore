@@ -1,6 +1,4 @@
 app/Pathways/__pycache__
 app/Pathways/.env
-.env
-.gitignore
 .vscode
 pathways.sql

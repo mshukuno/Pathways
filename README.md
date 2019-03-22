@@ -72,6 +72,128 @@ use `psql`:
 ```
 psql -h 172.18.0.2 -U postgres
 ```
+
 ## Running web dashboard
 
 Restart the containers (for the first time database is empty) and go to http://localhost:8050/
+
+<br>
+<br>
+
+
+## Windows 10 Installation
+
+### 1. Modify docker-compose-win10.yml
+
+Replace **{source file}** with a your *database.sql* file path
+```
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+        - {source file}:/docker-entrypoint-initdb.d/database.sql
+```
+example: 
+```
+C:/Users/mshukun/Desktop/database.sql:/docker-entrypoint-initdb.d/database.sql
+```
+<br>
+
+### 2. Modify .env file
+
+The .env file in the same directory as .yml files sets environment variables.  The content of curent .env file is example. Note that you only need to replace **seacretpassword** for *SQLALCHEMY_DATABASE_URI*. It should be the same as *POSTGRES_PASSWORD*.
+
+```
+POSTGRES_PASSWORD=secretpassword
+PGADMIN_DEFAULT_EMAIL=example@example.com
+PGADMIN_DEFAULT_PASSWORD=example
+SQLALCHEMY_DATABASE_URI=postgresql://postgres:secretpassword@db/postgres
+```
+
+<br>
+
+### 3. Run docker-compose-win10.yml file
+Open CMD or Powershell
+```
+cd <path to >/pathwyas-visualization-tool
+```
+```
+docker-compose -f docker-compose-win10.yml up --build
+```
+You will see something like below after successful run.
+```
+Successfully built 04e25c98d625
+Successfully tagged pathways-visualization-tool_dash:latest
+Creating pathways-visualization-tool_pgadmin_1 ... done
+Creating pathways-visualization-tool_adminer_1 ... done
+Creating pathways-visualization-tool_db_1      ... done
+Creating pathways-visualization-tool_dash_1    ... done
+```
+
+<br>
+
+### 4. Open Dash application
+Go to http://localhost:8050/
+
+<br>
+
+
+### Little More...
+
+
+#### Checking network
+```
+docker network ls
+```
+You will see something like:
+```
+1aa0d4fa2c31        pathways-visualization-tool_default   bridge              local
+```
+Then inspect the network:
+```
+docker network inspect pathways-visualization-tool_default
+```
+You see four containers in "*Containers*" JSON variable with the name listed below.
+- pathways-visualization-tool_adminer_1
+- pathways-visualization-tool_pgadmin_1
+- pathways-visualization-tool_db_1
+- pathways-visualization-tool_dash_1
+
+<br>
+
+#### Conecting PostgreSQL database in pgAdmin
+1. Open the browser and go to http://localhost:8000/
+2. It will open pgAdmin4 login page.  Enter email address and password you used in .env file.
+3. Now, you will add a new server in pgAdmin which connect to **pathways-visualization-tool_db_1** that we just created.
+
+        * Click Add New Server and name the server.  You can name whatever you want here.
+        * Click Connection tab
+                - Host name/address: pathways-visualization-tool_db_1
+                - Port: 5432
+                - Maintenance database: postgres
+                - Username: postgres
+                - Password: <Use POSTGRES_PASSWORD in your .env file>
+        * Click Save. You will see a new server just you created in the left pane.
+4. In the left pane, click Database > Schemas > Tables.  You should see tables created from database.sql file.
+
+<br>
+
+#### Query without pgAdmin
+You will need to get into container
+```
+docker exec -it pathways-visualization-tool_db_1 bash
+```
+```
+psql -U postgres
+``` 
+To quit PostgreSQL
+```
+\q
+```
+To quit bash
+``` 
+exit
+```
+

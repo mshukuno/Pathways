@@ -1,0 +1,41 @@
+ #docker volume create --name postgresql-volume
+version: '3.7'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - {source file}:/docker-entrypoint-initdb.d/database.sql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - 8000:80
+
+  dash:
+    build:
+      context: app
+    depends_on:
+      - db
+    restart: always
+    environment:
+      SQLALCHEMY_DATABASE_URI: ${SQLALCHEMY_DATABASE_URI}
+    ports:
+      - 8050:8050
+
+
+     
