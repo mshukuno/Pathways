@@ -521,6 +521,54 @@ class Utils:
                 result['low'] = prl['PestRiskLevel']['Low']
         
         return result
+
+    # By Country Right charts
+    # All show all displacement code
+    def data_high_low_pest_risk_flowers(self, count_quantity, df_risk, risk_levels):
+        trace = []
+
+        dispg = df_risk['DISPGroup'].unique()
+        for dg in dispg:
+            subset = df_risk[df_risk['DISPGroup']==dg]
+            fval = dict.fromkeys(risk_levels, 0)
+            if count_quantity == 'count':
+                for s in subset.to_dict('rows'):
+                    fval[s['Flower']] = s['Count']
+            elif count_quantity == 'quantity':
+                for s in subset.to_dict('rows'):
+                    fval[s['Flower']] = s['Quantity'] 
+            plot_high = go.Bar(
+                y=[key for key, val in fval.items()],
+                x=[val for key, val in fval.items()],
+                name=dg,
+                orientation='h',
+                marker=dict(
+                    color=CONFIG['DISP_GROUP_DESC'][dg]['color']
+                )
+            )
+            trace.append(plot_high) 
+        return trace
+    # By Country Right charts
+    # Displacement code is selected  
+    def data_high_low_pest_risk_flowers_disp(self, count_quantity, df_risk, disp_group):
+        trace = []
+        plot = go.Bar(
+            y=[f for f in df_risk['Flower']],
+            x=[c for c in df_risk[count_quantity]],
+            name=disp_group,
+            orientation='h',
+            marker=dict(
+                color=CONFIG['DISP_GROUP_DESC'][disp_group]['color']
+            )
+        )
+        trace.append(plot)
+        return trace
+
+
+    
+    
+    
+    
     
     def initDB(self):
         db.create_all()

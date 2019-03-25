@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 import pandas as pd
 import os
 import json
+from copy import deepcopy
 
 
 risklevel_json = os.path.abspath(os.path.join(os.path.dirname('__file__'), 'Pathways/RiskLevel.json'))
@@ -131,7 +132,7 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
                 name=disp_group,
                 line=dict(
                     color=CONFIG['DISP_GROUP_DESC'][disp_group]['color'],
-                    dash= CONFIG['DISP_GROUP_DESC'][g]['dash']
+                    dash= CONFIG['DISP_GROUP_DESC'][disp_group]['dash']
                 )
             ))        
 
@@ -175,7 +176,8 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
                 barmode='stack',
                 height= 700,
                 margin=dict(t=50),
-                yaxis=dict(automargin=True)
+                yaxis=dict(automargin=True),
+                xaxis=dict(title='')
             )
             # Get data
             df = U.data_ports_by_country(country, disp_group)
@@ -214,9 +216,11 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
                 disp_group_name = CONFIG['DISP_GROUP_DESC'][disp_group]['name']
                 if count_quantity == 'count':
                     layout['title'] = f'{disp_group_name} by Port (Count)'
+                    layout['xaxis']['title'] = 'Count'
                     x = [c for c in df['Count']]
                 elif count_quantity == 'quantity':
                     layout['title'] = f'{disp_group_name} by Port (Quantity)'
+                    layout['xaxis']['title'] = 'Quantity'
                     x = [q for q in df['Quantity']]
                 # Set stacked bar chart variables
                 plot = go.Bar(
@@ -261,16 +265,20 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
 def by_country_port_flowers_and_disp(pest_found, count_quantity, country, disp_group, port):
     trace_high = []
     trace_low = []
+    if count_quantity == 'count':
+        title = 'Count'
+    else:
+        title = 'Quantity'
     layout_high = dict(
         barmode='stack', 
-        title='High Risk COMMODITIES',
-        yaxis=dict(automargin=True)
+        title='Pest High Risk COMMODITIES',
+        yaxis=dict(automargin=True),
+        xaxis=dict(title='')
     )
-    layout_low = dict(
-        barmode='stack',
-        title='Low Risk COMMODITIES',
-        yaxis=dict(automargin=True)
-    )
+    layout_low = deepcopy(layout_high)
+    layout_low['title'] = 'Pest Low Risk COMMODITIES'
+    layout_high['xaxis']['title'] = title
+    layout_low['xaxis']['title'] = title
 
     if country != 'All':
         # Get flowers listed on Pest Risk Level json file
@@ -282,67 +290,13 @@ def by_country_port_flowers_and_disp(pest_found, count_quantity, country, disp_g
 
         if disp_group == 'All':
             # // Risk high barchart //
-            dispg_high = df_high['DISPGroup'].unique()
-            for dg in dispg_high:
-                subset = df_high[df_high['DISPGroup']==dg]
-                fval = dict.fromkeys(risk_levels['high'], 0)
-                
-                for s in subset.to_dict('rows'):
-                    fval[s['Flower']] = s['Count']
-                
-                plot_high = go.Bar(
-                    y=[key for key, val in fval.items()],
-                    x=[val for key, val in fval.items()],
-                    name=dg,
-                    orientation='h',
-                    marker=dict(
-                        color=CONFIG['DISP_GROUP_DESC'][dg]['color']
-                    )
-                )
-                trace_high.append(plot_high)
-
+            trace_high = U.data_high_low_pest_risk_flowers(count_quantity, df_high, risk_levels['high'])
             # // Risk low barchart //
-            dispg_low = df_low['DISPGroup'].unique()
-            for dg2 in dispg_low:
-                subset2 = df_low[df_low['DISPGroup']==dg2]
-                fval2 = dict.fromkeys(risk_levels['low'], 0)
-                
-                for s in subset2.to_dict('rows'):
-                    fval2[s['Flower']] = s['Count']
-                
-                plot_low = go.Bar(
-                    y=[key for key, val in fval2.items()],
-                    x=[val for key, val in fval2.items()],
-                    name=dg2,
-                    orientation='h',
-                    marker=dict(
-                        color=CONFIG['DISP_GROUP_DESC'][dg2]['color']
-                    )
-                )
-                trace_low.append(plot_low)
-        else:
-            # DISP group selected
-            plot_high = go.Bar(
-                y=[f for f in df_high['Flower']],
-                x=[c for c in df_high['Count']],
-                name=disp_group,
-                orientation='h',
-                marker=dict(
-                    color=CONFIG['DISP_GROUP_DESC'][disp_group]['color']
-                )
-            )
-            trace_high.append(plot_high)
+            trace_low = U.data_high_low_pest_risk_flowers(count_quantity, df_low, risk_levels['low'])    
 
-            plot_low = go.Bar(
-                y=[f for f in df_low['Flower']],
-                x=[c for c in df_low['Count']],
-                name=disp_group,
-                orientation='h',
-                marker=dict(
-                    color=CONFIG['DISP_GROUP_DESC'][disp_group]['color']
-                )
-            )
-            trace_low.append(plot_low)    
+        else:
+            trace_high = U.data_high_low_pest_risk_flowers_disp(title, df_high, disp_group)
+            trace_low = U.data_high_low_pest_risk_flowers_disp(title, df_low, disp_group)    
 
         # flowers = df['Flower'].unique()
         # print(f'Number of flowers: {len(flowers)}')
