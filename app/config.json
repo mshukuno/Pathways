@@ -2,14 +2,14 @@
     "AUTH": "NO",
     "DB_COLUMNS": ["COMMODITY", "DISP_CD", "FY", "LOCATION", "MON","ORIGIN_NM", "PATHWAY"],
     "DISP_GROUP_DESC": {
-            "All": {"name": "All", "color": "None"},
-            "AP": {"name": "Actionable pest", "color": "rgb(214, 39, 40)"},
-            "IR": {"name": "Inspected and released", "color": "rgb(31, 119, 180)"},
-            "NR": {"name": "Not released", "color": "rgb(227, 119, 194)"},
-            "PA": {"name": "Precautionary action", "color": "rgb(188, 189, 34)"},
-            "PD": {"name": "Phyto discrepancy", "color": "rgb(148, 103, 189)"},
-            "PP": {"name": "Pest permit", "color": "rgb(140, 86, 75)"},
-            "R": {"name": "Released without inspection", "color": "rgb(127, 127, 127)"}
+            "All": {"name": "All", "color": "", "dash": ""},
+            "AP": {"name": "Actionable pest", "color": "rgb(213,94,0)", "dash": "solid"},
+            "IR": {"name": "Inspected and released", "color": "rgb(0,114,178)", "dash": "solid"},
+            "NR": {"name": "Not released", "color": "rgb(227, 119, 194)", "dash": "dash"},
+            "PA": {"name": "Precautionary action", "color": "rgb(153, 153, 153)", "dash": "longdash"},
+            "PD": {"name": "Phyto discrepancy", "color": "rgb(0,158,115)", "dash": "dot"},
+            "PP": {"name": "Pest permit", "color": "rgb(230, 159, 0)", "dash": "solid"},
+            "R": {"name": "Released without inspection", "color": "rgb(86,180,233)", "dash": "dash"}
         },
     "MONTH": {
         "1": "Jan",

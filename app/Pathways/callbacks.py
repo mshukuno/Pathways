@@ -114,7 +114,8 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
                     y=y,
                     name=CONFIG['DISP_GROUP_DESC'][g]['name'],
                     line=dict(
-                        color=CONFIG['DISP_GROUP_DESC'][g]['color']
+                        color=CONFIG['DISP_GROUP_DESC'][g]['color'],
+                        dash= CONFIG['DISP_GROUP_DESC'][g]['dash']
                     )
                 )
                 trace.append(plot)
@@ -129,7 +130,8 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
                 y=y,
                 name=disp_group,
                 line=dict(
-                    color=CONFIG['DISP_GROUP_DESC'][disp_group]['color']
+                    color=CONFIG['DISP_GROUP_DESC'][disp_group]['color'],
+                    dash= CONFIG['DISP_GROUP_DESC'][g]['dash']
                 )
             ))        
 
