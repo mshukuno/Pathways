@@ -6,7 +6,10 @@ import json
 from flask import Flask
 from dash_google_auth import GoogleOAuth
 import sys
-from sty import fg, rs
+from colorama import init, Fore
+
+# Initiate colorama for Windows
+init()
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 APP_ROOT = os.path.join(os.path.dirname(__file__), '..') 
@@ -23,7 +26,7 @@ app.title = 'Pathways'
 # Check SQLALCHEMY connection to DATABASE
 try:
     # Get URI from system
-    print(f'{fg.green} ----- Checking ----- {fg.rs}')
+    print(f'{Fore.GREEN} ----- Checking ----- {Fore.RESET}')
     if os.environ.get('SQLALCHEMY_DATABASE_URI'):
         app.server.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
     # Get URI from .env
@@ -31,11 +34,11 @@ try:
         dotenv_path = os.path.join(APP_ROOT, '.env')
         load_dotenv(dotenv_path)        
         app.server.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-    print(f'SQLALCHEMY_DATABASE_URI ---{fg.green} OK{fg.rs}\n')
+    print(f'SQLALCHEMY_DATABASE_URI ---{Fore.GREEN} OK{Fore.RESET}\n')
     db = SQLAlchemy(app.server)
 except Exception as e:
     print(e)
-    print(fg.red + ' SQLALCHEMY_DATABASE_URI not set or incorrect URI.' + fg.rs)
+    print(FORE.red + ' SQLALCHEMY_DATABASE_URI not set or incorrect URI.' + fg.rs)
 
 # Check Google Auth
 if CONFIG['AUTH'].lower() == 'yes':
@@ -43,25 +46,25 @@ if CONFIG['AUTH'].lower() == 'yes':
     app.url_base_pathname = '/'
 
     try:
-        print(f'{fg.green} ----- Google Auth Settings ----- {fg.rs}')
+        print(f'{Fore.GREEN} ----- Google Auth Settings ----- {Fore.RESET}')
         # Getting values from .env file
         server.secret_key = os.getenv('FLASK_SEACRET_KEY')
-        print(f'FLASK_SEACRET_KEY ---{fg.green} OK{fg.rs}')
+        print(f'FLASK_SEACRET_KEY ---{Fore.GREEN} OK{Fore.RESET}')
 
         server.config['GOOGLE_OAUTH_CLIENT_ID'] = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
-        print(f'GOOGLE_OAUTH_CLIENT_ID ---{fg.green} OK{fg.rs}')
+        print(f'GOOGLE_OAUTH_CLIENT_ID ---{Fore.GREEN} OK{Fore.RESET}')
 
         server.config['GOOGLE_OAUTH_CLIENT_SECRET'] = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
-        print(f'GOOGLE_OAUTH_CLIENT_SECRET ---{fg.green} OK{fg.rs}')
+        print(f'GOOGLE_OAUTH_CLIENT_SECRET ---{Fore.GREEN} OK{Fore.RESET}')
 
         # DEV: Remove this for release
         os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
         
     except Exception as e:
         print(e)
-        print(fg.red + '''Something went wrong. \n
+        print(Fore.RED + '''Something went wrong. \n
         Check "FLASK_SEACRET_KEY", GOOGLE_OAUTH_CLIENT_ID", and 
-        "GOOGLE_OAUTH_CLIENT_SECRET" values set in .env file.''')
+        "GOOGLE_OAUTH_CLIENT_SECRET" values set in .env file.''' + Fore.RESET)
         sys.exit()
 
 
@@ -81,22 +84,22 @@ if CONFIG['AUTH'].lower() == 'yes':
                     app,
                     authorized_emails
                 )
-                print(f'GOOGLE AUTH ---{fg.green} OK{fg.rs}\n\n')
+                print(f'GOOGLE AUTH ---{Fore.GREEN} OK{Fore.RESET}\n\n')
 
                 @server.route('/Pathways')
                 def pathways_app():
                     return app.index()
 
             else:
-                print(fg.yellow +' Missing "login" table in DB.' + fg.rs)
+                print(Fore.YELLOW +' Missing "login" table in DB.' + Fore.RESET)
                 sys.exit()
         else:
-            print(fg.yellow + ' No table found in DB. Upload dump file.' + fg.rs)
+            print(Fore.YELLOW + ' No table found in DB. Upload dump file.' + Fore.RESET)
             sys.exit()
         
     except Exception as e:
         print(e)
-        print(fg.red + ' No table found in DB. Upload dump file' + fg.rs)
+        print(Fore.RED + ' No table found in DB. Upload dump file' + Fore.RESET)
         sys.exit()
 
 

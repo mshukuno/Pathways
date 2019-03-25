@@ -8,5 +8,5 @@ python-dotenv
 dash_google_auth
 psycopg2
 pandas
-sty
+colorama
 psycopg2-binary

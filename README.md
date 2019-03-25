@@ -174,8 +174,6 @@ You see four containers in "*Containers*" JSON variable with the name listed bel
 - pathways-visualization-tool_db_1
 - pathways-visualization-tool_dash_1
 
-<br>
-
 #### Conecting PostgreSQL database in pgAdmin
 1. Open the browser and go to http://localhost:8000/
 2. It will open pgAdmin4 login page.  Enter email address and password you used in .env file.
@@ -190,8 +188,6 @@ You see four containers in "*Containers*" JSON variable with the name listed bel
                 - Password: <Use POSTGRES_PASSWORD in your .env file>
         * Click Save. You will see a new server just you created in the left pane.
 4. In the left pane, click Database > Schemas > Tables.  You should see tables created from database.sql file.
-
-<br>
 
 #### Query without pgAdmin
 You will need to get into container
