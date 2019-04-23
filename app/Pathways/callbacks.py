@@ -106,10 +106,8 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
             for g in df['DISPGroup'].unique():
                 subset = df[df.DISPGroup == g]
                 x = [d for d in subset['Date']]
-                if count_quantity == 'count':
-                    y = [c for c in subset['Count']]
-                elif count_quantity == 'quantity':
-                    y = [q for q in subset['Quantity']]
+                y = [c for c in subset[count_quantity.capitalize()]]
+
                 plot = go.Scatter(
                     x=x,
                     y=y,
@@ -122,10 +120,8 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
                 trace.append(plot)
         else:
             x = [d for d in df['Date']]
-            if count_quantity == 'count':
-                y = [c for c in df['Count']]
-            elif count_quantity == 'quantity':
-                y = [q for q in df['Quantity']]
+            y = [c for c in df[count_quantity.capitalize()]]
+            
             trace.append(go.Scatter(
                 x=x,
                 y=y,
@@ -162,7 +158,6 @@ def section_country_title(country):
                 Input('disp-group-dropdown', 'value')])
 # Port and DISP code by country
 def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
-
     # // Pest Found selected //
     if country!= 'All':
         if pest_found:
@@ -177,7 +172,7 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
                 height= 700,
                 margin=dict(t=50),
                 yaxis=dict(automargin=True),
-                xaxis=dict(title='')
+                xaxis=dict(title=count_quantity.capitalize())
             )
             # Get data
             df = U.data_ports_by_country(country, disp_group)
@@ -187,16 +182,17 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
 
             # // Show all DISP code by port //
             if disp_group == 'All':
+                
                 for dg in dispg:
                     subset = df[df['DISPGroup'] == dg]
                     pval = dict.fromkeys(ports, 0)
                     
                     if count_quantity == 'count':
-                        layout['title'] = 'DISP Code by Port (Count)'
+                        layout['title'] = f'All Disposition Code Group by Port for Shipments Count from {country}'
                         for s in subset.to_dict('rows'):
                             pval[s['PortCity']] = s['Count']
                     elif count_quantity == 'quantity':
-                        layout['title'] = 'DISP Code by Port (Quantity)'
+                        layout['title'] = f'All Disposition Code Group by Port for Sum of Commodity Quantity from {country}'
                         for s in subset.to_dict('rows'):
                             pval[s['PortCity']] = s['Quantity']
                     
@@ -214,13 +210,12 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
             else:
                 y=[p for p in df['PortCity']]
                 disp_group_name = CONFIG['DISP_GROUP_DESC'][disp_group]['name']
+                
                 if count_quantity == 'count':
-                    layout['title'] = f'{disp_group_name} by Port (Count)'
-                    layout['xaxis']['title'] = 'Count'
+                    layout['title'] = f'{disp_group_name} by Port for Shipments Count from {country}'
                     x = [c for c in df['Count']]
                 elif count_quantity == 'quantity':
-                    layout['title'] = f'{disp_group_name} by Port (Quantity)'
-                    layout['xaxis']['title'] = 'Quantity'
+                    layout['title'] = f'{disp_group_name} by Port for Sum of Commodity Quantity from {country}'
                     x = [q for q in df['Quantity']]
                 # Set stacked bar chart variables
                 plot = go.Bar(
@@ -265,21 +260,24 @@ def by_country_port_and_disp(pest_found, count_quantity, country, disp_group):
 def by_country_port_flowers_and_disp(pest_found, count_quantity, country, disp_group, port):
     trace_high = []
     trace_low = []
-    if count_quantity == 'count':
-        title = 'Count'
-    else:
-        title = 'Quantity'
+    title = count_quantity.capitalize()
+
     layout_high = dict(
         barmode='stack', 
-        title='Pest High Risk COMMODITIES',
+        title='',
         yaxis=dict(automargin=True),
-        xaxis=dict(title='')
+        xaxis=dict(title=count_quantity.capitalize())
     )
     layout_low = deepcopy(layout_high)
-    layout_low['title'] = 'Pest Low Risk COMMODITIES'
-    layout_high['xaxis']['title'] = title
-    layout_low['xaxis']['title'] = title
 
+    if count_quantity == 'count':
+        layout_high['title'] = f'Pest High-Risk Commodities Shipments Count by Disposition Code in {port} Port'
+        layout_low['title'] = f'Pest Low-Risk Commodities Shipments Count by Disposition Code in {port} Port'
+    elif count_quantity == 'quantity':
+        layout_high['title'] = f'Pest High-Risk Commodities Sum of Quantity by Disposition Code in {port} Port'
+        layout_low['title'] = f'Pest Low-Risk Commodities Sum of Quantity by Disposition Code in {port} Port'
+
+    
     if country != 'All':
         # Get flowers listed on Pest Risk Level json file
         risk_levels = U.data_pest_risk_level(PEST_RISK_LEVEL, country)
@@ -295,6 +293,14 @@ def by_country_port_flowers_and_disp(pest_found, count_quantity, country, disp_g
             trace_low = U.data_high_low_pest_risk_flowers(count_quantity, df_low, risk_levels['low'])    
 
         else:
+            disp_group_name = CONFIG['DISP_GROUP_DESC'][disp_group]['name']
+    
+            if count_quantity == 'count':
+                layout_high['title'] = f'Pest High-Risk Commodities Shipments Count by {disp_group_name} in {port} Port'
+                layout_low['title'] = f'Pest Low-Risk Commodities Shipments Count by {disp_group_name} in {port} Port'
+            elif count_quantity == 'quantity':
+                layout_high['title'] = f'Pest High-Risk Commodities Sum of Quantity by {disp_group_name} in {port} Port'
+                layout_low['title'] = f'Pest Low-Risk Commodities Sum of Quantity by {disp_group_name} in {port} Port'
             trace_high = U.data_high_low_pest_risk_flowers_disp(title, df_high, disp_group)
             trace_low = U.data_high_low_pest_risk_flowers_disp(title, df_low, disp_group)    
 
