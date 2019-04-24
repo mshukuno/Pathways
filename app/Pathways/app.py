@@ -8,7 +8,6 @@ import dash_table as dt
 U = Utils()
 countries = U.get_country_list(50)
 
-
 app.layout =  html.Div([
     # Header
     html.Div(
@@ -35,7 +34,7 @@ app.layout =  html.Div([
                 children=[
                 dcc.Dropdown(
                     id='db-column-dropdown',
-                    options=[{'label': c, 'value': c} for c in CONFIG['DB_COLUMNS']],
+                    options=[{'label': v['name'], 'value': k} for k, v in CONFIG['DB_COLUMNS'].items()],
                     value='DISP_CD',
                     clearable=False)
             ]),

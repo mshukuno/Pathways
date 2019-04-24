@@ -1,6 +1,14 @@
 {
     "AUTH": "NO",
-    "DB_COLUMNS": ["COMMODITY", "DISP_CD", "FY", "LOCATION", "MON","ORIGIN_NM", "PATHWAY"],
+    "DB_COLUMNS": {
+        "COMMODITY": {"name": "Commodities"} ,
+        "DISP_CD": {"name": "Disposition Code"}, 
+        "FY": {"name": "Fiscal Year"},
+        "LOCATION": {"name": "Port of Entry (Location)"},
+        "MON": {"name": "Month"},
+        "ORIGIN_NM": {"name": "Country of Origin"},
+        "PATHWAY": {"name": "Mode of Transportation (Pathway)"}
+    },
     "DISP_GROUP_DESC": {
             "All": {"name": "All", "color": "", "dash": ""},
             "AP": {"name": "Actionable Pest", "color": "rgb(213,94,0)", "dash": "solid"},

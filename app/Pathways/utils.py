@@ -192,18 +192,21 @@ class Utils:
                 else:
                     d_row[col] = row[col]
             dl_data.append(d_row)
-
+        
         for c in df.columns.values:
             d_col = {}
             d_col['id'] = c
             if c == 'CountPer':
-                d_col['name'] = 'Count (%)'
+                d_col['name'] = 'Percentage of Count'
             elif c == 'QuantityPer':
-                d_col['name'] = 'Quantity (%)'
+                d_col['name'] = 'Percentage of quantity'
+            elif c not in ['Count', 'Quantity']:
+                d_col['name'] = CONFIG['DB_COLUMNS'][c]['name']
             else:
                 d_col['name'] = c
-            dl_cols.append(d_col)
 
+            dl_cols.append(d_col)
+        
         htmldiv = html.Div([
             dt.DataTable(
                 id='datatable',

@@ -37,6 +37,7 @@ def group_by(column):
     # Args (db column, count/quantity/both, percentage=yes/no)
     df = U.query_group_by_one(column, 'both', 'yes')
 
+    disp_group_name = CONFIG['DB_COLUMNS'][column]['name']
     # Get data for count and quantity
     count_pie_vals = U.consolidate_values(df, column, 'CountPer', grater_than)
     quantity_pie_vals = U.consolidate_values(
@@ -51,7 +52,7 @@ def group_by(column):
         'Quantity')
 
     htmldiv = U.chart_count_quantity_subplots(
-        pie_one, pie_two, df, f'Group by {column}: Count vs Quantity')
+        pie_one, pie_two, df, f'Group by {disp_group_name}: Count and Quantity')
 
     return htmldiv
 
