@@ -57,12 +57,16 @@ class Utils:
 
     def convert_month_label(self, label_key, value_key, dict_list, name):
         ld_vals = []
+
         for row in dict_list:
-            new_vals = {label_key: '', value_key: ''}
-            month = CONFIG['MONTH'][str(row[label_key])[:-2]]
-            new_vals[label_key] = month
-            new_vals[value_key] = row[value_key]
-            ld_vals.append(new_vals)
+            if row[value_key] != '':
+                new_vals = {label_key: '', value_key: ''}
+                month = CONFIG['MONTH'][str(row[label_key])[:-2]]
+                new_vals[label_key] = month
+                new_vals[value_key] = row[value_key]
+                ld_vals.append(new_vals)
+            else:
+                print(f'{str(row[value_key])} is not Month.')
         result = {
             'values': self.list_generator(value_key, ld_vals),
             'labels': self.list_generator(label_key, ld_vals),
