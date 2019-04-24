@@ -27,7 +27,7 @@ app.layout =  html.Div([
         children=[
             # ---------- Section: Group By ----------
             # Child 1
-            html.H2('Group By'),
+            html.H2('Filter By'),
             # Child 2 - F280 DB columns dropdown
             html.Div(
                 style={'width': '30%'},               
