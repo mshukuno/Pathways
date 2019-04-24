@@ -72,10 +72,15 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
     trace = []
 
     # Layout for line chart ---------------------------------
+    disp_group_name = CONFIG['DISP_GROUP_DESC'][disp_group]['name']
+    # if disp_group_name == 'All':
+    #     title = 'All Disposition Code Group'
+    # else:
+    #     title = f'{disp_group_name} Disposition Code Group'
     layout = {
-        'title': 'Grouped DISP',
+        'title': '',
         'xaxis': dict(
-            title='Time', 
+            title='By Year and Month', 
             showgrid=True,
             zeroline=False
         ),
@@ -86,13 +91,41 @@ def temporal_line_chart(pest_found, date_group, count_quantity, country, disp_gr
 
     if date_group == 'month':
         layout['xaxis']['tickmode'] = 'linear'
-        layout['xaxis']['title'] = 'Time by Month'
+        layout['xaxis']['title'] = 'By Month'
     else:
         layout['xaxis']['rangeslider']=dict(visible=True)
         layout['xaxis']['type']='date'
     
-    if count_quantity == 'quantity':
+    if count_quantity == 'count':
+        layout['yaxis']['title'] = 'Count'
+        c_title = 'Shipments Count'
+
+        if disp_group_name == 'All':
+            if country == 'All':
+                layout['title'] = f'{c_title} by All Disposition Code'
+            else:
+                layout['title'] = f'{c_title} from {country} by All Disposition Code'
+        else:
+            if country == 'All':
+                layout['title'] = f'{c_title} by {disp_group_name}'
+            else:
+                layout['title'] = f'{c_title} from {country} by {disp_group_name}'
+        
+        
+    elif count_quantity == 'quantity':
         layout['yaxis']['title'] = 'Quantity'
+        q_title = 'Sum of Commodity Quantity'
+        if disp_group_name == 'All':
+            if country == 'All':
+                layout['title'] = f'{q_title} by All Disposition Code'
+            else:
+                layout['title'] = f'{q_title} from {country} by All Disposition Code'
+        else:
+            if country == 'All':
+                layout['title'] = f'{q_title} by {disp_group_name} and {date_group}'
+            else:
+                layout['title'] = f'{q_title} from {country} by {disp_group_name}'
+        
 
     #--------------------------------------------------------
 
