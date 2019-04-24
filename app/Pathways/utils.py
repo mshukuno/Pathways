@@ -540,7 +540,7 @@ class Utils:
             plot_high = go.Bar(
                 y=[key for key, val in fval.items()],
                 x=[val for key, val in fval.items()],
-                name=dg,
+                name=CONFIG['DISP_GROUP_DESC'][dg]['name'],
                 orientation='h',
                 marker=dict(
                     color=CONFIG['DISP_GROUP_DESC'][dg]['color']
@@ -555,7 +555,7 @@ class Utils:
         plot = go.Bar(
             y=[f for f in df_risk['Flower']],
             x=[c for c in df_risk[count_quantity]],
-            name=disp_group,
+            name=CONFIG['DISP_GROUP_DESC'][disp_group]['name'],
             orientation='h',
             marker=dict(
                 color=CONFIG['DISP_GROUP_DESC'][disp_group]['color']
